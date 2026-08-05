@@ -1,4 +1,4 @@
-<img width="1917" height="1025" alt="Screenshot 2026-08-05 121848" src="https://github.com/user-attachments/assets/f73df62b-4585-4a5c-bb12-8ad17060a6b1" /># 📊 End-to-End Vendor Sales Analytics & Business Intelligence Dashboard
+📊 End-to-End Vendor Sales Analytics & Business Intelligence Dashboard
 <img width="1168" height="663" alt="Screenshot 2026-08-05 121701" src="https://github.com/user-attachments/assets/6bd1ba17-8748-4379-accb-afcfd9a0e578" />
 An end-to-end Data Analytics project that transforms raw vendor transaction data into actionable business insights using **SQL, Python, Pandas, Exploratory Data Analysis (EDA), and Power BI**.
 
@@ -207,9 +207,6 @@ The final dashboard provides an interactive overview of vendor performance.
 
 ## Dashboard Preview
 
-
-<img width="1917" height="1017" alt="Screenshot 2026-08-05 122905" src="https://github.com/user-attachments/assets/2ac6ed45-3bfa-47a1-afde-4f758dcd85e2" />
-<img width="1917" height="1017" alt="Screenshot 2026-08-05 122905" src="https://github.com/user-attachments/assets/65d0198d-079b-42c4-b139-0222b7e7b955" />
 <img width="1186" height="703" alt="Screenshot 2026-08-05 123407" src="https://github.com/user-attachments/assets/96ea49fa-af6a-470c-bc30-1c1f0e55e4ea" />
 
 
