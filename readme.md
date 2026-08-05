@@ -1,4 +1,4 @@
-# 📊 End-to-End Vendor Sales Analytics & Business Intelligence Dashboard
+<img width="1917" height="1025" alt="Screenshot 2026-08-05 121848" src="https://github.com/user-attachments/assets/f73df62b-4585-4a5c-bb12-8ad17060a6b1" /># 📊 End-to-End Vendor Sales Analytics & Business Intelligence Dashboard
 <img width="1168" height="663" alt="Screenshot 2026-08-05 121701" src="https://github.com/user-attachments/assets/6bd1ba17-8748-4379-accb-afcfd9a0e578" />
 An end-to-end Data Analytics project that transforms raw vendor transaction data into actionable business insights using **SQL, Python, Pandas, Exploratory Data Analysis (EDA), and Power BI**.
 
@@ -167,12 +167,15 @@ New features created:
 
 EDA was performed using **Matplotlib** and **Seaborn** to identify distributions, correlations, trends, and outliers before dashboard development.
 <img width="1917" height="1017" alt="Screenshot 2026-08-05 122905" src="https://github.com/user-attachments/assets/3c4b0125-487d-4b8e-bc80-06a7ae27a04b" />
-
+<img width="1917" height="1026" alt="Screenshot 2026-08-05 122854" src="https://github.com/user-attachments/assets/d458d5b1-b7e7-4276-a6ed-fbd3809392a4" />
 ---
 
 ## 📊 Distribution Analysis
 
 <img src="images/distribution_analysis.png" width="900">
+
+<img width="1917" height="1017" alt="Screenshot 2026-08-05 122905" src="https://github.com/user-attachments/assets/cf510d1c-fde6-428f-822f-2d7721b02077" />
+
 
 ### Observations
 
@@ -185,7 +188,9 @@ EDA was performed using **Matplotlib** and **Seaborn** to identify distributions
 
 ## 🔥 Correlation Heatmap
 
-<img src="images/correlation_heatmap.png" width="900">
+<img width="1917" height="1023" alt="Screenshot 2026-08-05 123327" src="https://github.com/user-attachments/assets/9bbb5ce7-2ac7-44a2-9dcf-8b425b42155a" />
+
+
 
 ### Key Findings
 
@@ -202,7 +207,11 @@ The final dashboard provides an interactive overview of vendor performance.
 
 ## Dashboard Preview
 
-<img src="images/dashboard_preview.png" width="1000">
+
+<img width="1917" height="1017" alt="Screenshot 2026-08-05 122905" src="https://github.com/user-attachments/assets/2ac6ed45-3bfa-47a1-afde-4f758dcd85e2" />
+<img width="1917" height="1017" alt="Screenshot 2026-08-05 122905" src="https://github.com/user-attachments/assets/65d0198d-079b-42c4-b139-0222b7e7b955" />
+<img width="1186" height="703" alt="Screenshot 2026-08-05 123407" src="https://github.com/user-attachments/assets/96ea49fa-af6a-470c-bc30-1c1f0e55e4ea" />
+
 
 ---
 
