@@ -2,9 +2,9 @@
 
 ![Dashboard Preview](https://github.com/user-attachments/assets/6bd1ba17-8748-4379-accb-afcfd9a0e578)
 
-An end-to-end data analytics project that transforms raw vendor transaction data into actionable business insights using **SQL, Python, Pandas, Exploratory Data Analysis (EDA), and Power BI**.
+An end-to-end data analytics project that transforms raw vendor transaction data into actionable business insights using **SQL, Python (Pandas, NumPy, SciPy), Exploratory Data Analysis, Statistical Hypothesis Testing, and Power BI**.
 
-The project demonstrates a complete analytics workflow: data ingestion, SQL querying, feature engineering, statistical analysis, visualization, and dashboard development.
+The project demonstrates a complete analytics workflow: data ingestion → SQL querying → feature engineering → statistical analysis → visualization → dashboard development.
 
 ---
 
@@ -15,11 +15,11 @@ Organizations dealing with thousands of purchase and sales transactions across m
 - Which vendors generate the highest revenue?
 - Which vendors are the most profitable?
 - Which brands contribute the most to total sales?
-- Does purchasing in bulk reduce purchase price?
-- How much does freight cost affect profitability?
+- Does purchasing in bulk actually reduce unit price — and is that effect statistically real?
+- How much does freight cost affect profitability, and is it distributed evenly across vendors?
 - Which vendors should the business prioritize?
 
-This project answers these questions by combining SQL, Python, and Power BI into one analytics pipeline.
+This project answers these questions by combining SQL, Python, statistical testing, and Power BI into one analytics pipeline.
 
 ---
 
@@ -34,9 +34,9 @@ This project answers these questions by combining SQL, Python, and Power BI into
 
 Combines multiple source tables:
 - Sales
-- Purchases
+- Purchases (2,372,475 line items)
 - Purchase Prices
-- Vendor Invoice
+- Vendor Invoice (5,543 invoices)
 - Beginning Inventory
 - Ending Inventory
 
@@ -53,6 +53,7 @@ Combines multiple source tables:
 | Python | Data processing |
 | Pandas | Data cleaning & manipulation |
 | NumPy | Numerical operations |
+| SciPy (`stats`) | Hypothesis testing, correlation, confidence intervals |
 | SQLite | Database |
 | SQL | Business queries |
 | Matplotlib | Data visualization |
@@ -75,6 +76,8 @@ Python Data Cleaning
 Feature Engineering
       ↓
 Exploratory Data Analysis
+      ↓
+Statistical Hypothesis Testing
       ↓
 Interactive Power BI Dashboard
       ↓
@@ -99,6 +102,7 @@ End-to-End-Vendor-Sales-Analytics
 │   ├── exploratorydata.py
 │   ├── ingestion_db.py
 │   ├── vendorperformanceanalysis.py
+│   ├── statistical_analysis.py
 │   └── ingestion.dblog
 │
 ├── images/                  # charts referenced in this README
@@ -180,6 +184,50 @@ EDA was performed using Matplotlib and Seaborn to identify distributions, correl
 
 ---
 
+## 📐 Statistical Analysis & Hypothesis Testing
+
+Beyond descriptive EDA, formal statistical tests (via `scipy.stats`) were run on the raw `purchases.csv` (2,372,321 valid line items) and `vendor_invoice.csv` (5,543 invoices) to validate business assumptions rather than just eyeball charts.
+
+### 1. Does bulk purchasing reduce unit price?
+
+| Order size bucket | Mean Purchase Price | Median | Count |
+|---|---|---|---|
+| Small (1–6 units) | $15.16 | $10.96 | 969,085 |
+| Medium (7–12 units) | $10.01 | $7.99 | 1,024,143 |
+| Large (13–24 units) | $10.78 | $8.14 | 188,576 |
+| Bulk (25+ units) | $8.44 | $6.46 | 190,517 |
+
+- **Pearson r** (Quantity vs. Price) = -0.083 — weak *linear* relationship
+- **Spearman ρ** = -0.257 — a stronger *monotonic* (non-linear) relationship, meaning the effect exists but isn't a straight line
+- **One-way ANOVA** across buckets: F = 17,351.09, **p < 0.001**
+
+**Conclusion:** Bulk buying does reduce per-unit price, and the effect is statistically significant — but the relationship is non-linear, so a simple correlation coefficient understates it.
+
+### 2. Freight cost outliers (IQR method)
+
+- IQR bounds: **[-$331.94, $566.62]**
+- **738 of 5,543 invoices (13.3%)** are freight outliers
+- Mean freight per invoice: **$295.95**, 95% CI: **[$277.16, $314.74]**
+
+### 3. Does freight scale efficiently with order size?
+
+- **Pearson r** (Quantity vs. Freight) = **0.947**, p < 0.001
+
+Freight cost scales almost linearly with order quantity — meaning freight isn't disproportionately punishing small vendors, it's simply proportional to volume shipped.
+
+### 4. Are top vendors more freight-efficient? (Two-sample t-test)
+
+| Group | Mean Freight/Unit | n |
+|---|---|---|
+| Top 10 vendors by $ volume | $0.06 | 550 |
+| All other vendors | $0.07 | 4,993 |
+
+- **Welch's t-test:** t = -7.07, **p = 2.5 × 10⁻¹²**
+
+**Conclusion:** The difference is statistically significant — top vendors negotiate meaningfully better freight rates per unit, likely due to shipping scale/negotiating power.
+
+---
+
 ## 📊 Power BI Dashboard
 
 ![Dashboard](https://github.com/user-attachments/assets/96ea49fa-af6a-470c-bc30-1c1f0e55e4ea)
@@ -198,12 +246,12 @@ EDA was performed using Matplotlib and Seaborn to identify distributions, correl
 
 ## 💡 Key Business Insights
 
-- A small set of top-performing vendors contributes the majority of total revenue.
-- Bulk purchasing generally reduces purchase price per unit.
-- Freight cost varies significantly across vendors.
-- Medium-sized orders show the highest average unit price.
-- Gross profit varies considerably by brand.
-- A small number of brands account for most overall sales — consistent with the Pareto Principle (80/20 rule).
+- A small set of top-performing vendors contributes the majority of total revenue — the **top 20% of vendors account for ~88% of total sales**, an even sharper concentration than the classic 80/20 rule.
+- Bulk purchasing significantly reduces purchase price per unit (ANOVA p < 0.001), though the relationship is non-linear.
+- Freight cost scales almost linearly with order quantity (r = 0.947) — it is not a disproportionate burden on smaller orders.
+- Top-10 vendors are statistically more freight-efficient than the rest (p < 0.001), suggesting negotiating leverage from volume.
+- Gross profit varies considerably by brand, with a small number of brands driving most profit.
+- Medium-sized orders show the highest average unit price relative to large/bulk orders.
 
 ---
 
@@ -223,13 +271,15 @@ EDA was performed using Matplotlib and Seaborn to identify distributions, correl
 
 ## 🚀 Skills Demonstrated
 
-SQL · SQLite · Python · Pandas · NumPy · Data Cleaning · Data Wrangling · Feature Engineering · Exploratory Data Analysis · Business Intelligence · Power BI · Dashboard Design · Data Visualization · Business Analytics
+SQL · SQLite · Python · Pandas · NumPy · SciPy · Statistical Hypothesis Testing (t-test, ANOVA) · Correlation Analysis (Pearson & Spearman) · Confidence Intervals · Outlier Detection (IQR) · Data Cleaning · Data Wrangling · Feature Engineering · Exploratory Data Analysis · Matplotlib · Seaborn · Business Intelligence · Power BI · Dashboard Design · Business Analytics
 
 ---
 
 ## 🧩 Data Quality Challenge & Fix
 
 While validating the aggregated metrics, a join issue was found: vendor-level fields (**Total Purchase Dollars**, **Total Purchase Quantity**, **Total Freight Cost**) were being repeated across *every brand row* belonging to that vendor — a classic one-to-many fan-out (e.g., a vendor carrying 449 brands had its purchase-dollar figure duplicated 449 times). A naive `SUM()` across brand-level rows therefore overstated these totals by orders of magnitude.
+
+**Evidence of the bug:** the unfixed aggregation produced an average Gross Profit of **–$11.9 million per brand row** (clearly impossible) across 12,255 rows — a direct symptom of the fan-out duplicating large vendor-level totals thousands of times over.
 
 **Fix:** deduplicated vendor-level fields at the vendor grain (one row per vendor) before summing, while brand-level fields (Sales, Gross Profit, Excise Tax) were summed directly since they are genuinely distinct per brand. This corrected the KPIs shown above.
 
@@ -243,6 +293,7 @@ While validating the aggregated metrics, a join issue was found: vendor-level fi
 - SQL Server integration
 - Predictive analytics (ML-based demand/profit forecasting)
 - Incremental data refresh
+- Extend hypothesis testing to vendor-level profit margin comparisons (ANOVA across vendor tiers)
 
 ---
 
@@ -273,7 +324,12 @@ python eda_and_logs/exploratorydata.py
 python eda_and_logs/vendorperformanceanalysis.py
 ```
 
-**6. Open the Power BI dashboard**
+**6. Run statistical analysis (hypothesis tests, correlations, CIs)**
+```bash
+python eda_and_logs/statistical_analysis.py
+```
+
+**7. Open the Power BI dashboard**
 ```
 dashboard/vendorsalesanalysisdashboard.pbix
 ```
@@ -282,7 +338,7 @@ dashboard/vendorsalesanalysisdashboard.pbix
 
 ## 📌 Conclusion
 
-This project demonstrates a complete end-to-end data analytics workflow — from ingesting large-scale transactional data into a database to generating business insights through SQL, Python, EDA, and Power BI. It reflects practical skills in data cleaning, SQL querying, feature engineering, statistical analysis, dashboard development, and business intelligence reporting, relevant to Data Analyst and BI roles.
+This project demonstrates a complete end-to-end data analytics workflow — from ingesting large-scale transactional data into a database to generating statistically validated business insights through SQL, Python, EDA, hypothesis testing, and Power BI. It reflects practical skills in data cleaning, SQL querying, feature engineering, statistical inference, dashboard development, and business intelligence reporting, relevant to Data Analyst and BI roles.
 
 ---
 
