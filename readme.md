@@ -28,8 +28,8 @@ This project answers these questions by combining SQL, Python, and Power BI into
 | Detail | Value |
 |---|---|
 | Original dataset size | ~2 GB |
-| Total records (full dataset) | ~20 million |
-| Records used in this analysis | *(specify — e.g., sample subset used for the published dashboard)* |
+| Total records (full dataset, estimated) | ~1.6–1.8 crore (~16–18 million) |
+| Confirmed source rows (excl. `sales.csv`, ~2GB) | ~28.2 lakh (2,821,296 across begin/end inventory, purchases, vendor invoice, purchase prices) |
 | Database | SQLite |
 
 Combines multiple source tables:
