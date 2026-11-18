@@ -1,4 +1,7 @@
-data/*.csv
+*.csv
 *.db
 data/
-*.db
+myenv/
+.env
+__pycache__/
+.ipynb_checkpoints/
